@@ -1,0 +1,67 @@
+Questão 1: Analisando se a maioria das 100 melhores universidades do mundo tem ou nao mais de 20000 alunos
+
+import pandas as pd # declara a variavel pandas, pra analise de dados
+import seaborn as sns # declara a variavel seaborn, pra construcao de gráficos simples
+import matplotlib.pyplot as plt # declara a variavel matplotlib.pyplot, pra construcao de gráficos complexos
+
+ds = pd.read_csv("top_100_universities_dataset.csv") # declara uma variavel e fala que ela é igual ao nosso banco de dados e lê ela com read
+ds.head() # mostra os dados do banco de dados
+
+ds.columns = ['Posicao', 'NomeUniversidade', 'Localizacao', 'AnoFundacao', 'TotalEstudantes', 'NumeroDeCampi', 'ProgramasOferecidos', 'TipoUniversidade', 'TotalFaculdades', 'TotalDeAreasDeCampusEmHectares'] # renomeia os nomes das tables
+ds.head() # mostra os dados com os nomes das tables novas
+
+ds['TotalEstudantes'].describe() # isto mostra a media, mediana, desvio padrao da table TotalEstudantes
+
+1. A Mediana (o valor do meio: 50%)
+O valor de 50% é 28.476. Isso significa que metade das universidades tem mais que 28 mil alunos. Se a "metade" já está perto dos 30 mil, a maioria certamente não está em 20 mil.
+2. O Primeiro Quartil (25%)
+O valor de 25% é 18.966. Isso nos diz que apenas 25 das 100 universidades têm menos de 19 mil alunos. Ou seja, a grande maioria (75%) tem mais do que isso.
+3. A Média (mean)
+A média é de 30.987. Ela está bem acima dos 20.000, o que reforça que os valores estão puxando a balança para cima.
+4. O Desvio Padrão (std)
+O seu std é de 16.151. Isso é um valor bem alto! Ele confirma o que vimos no seu gráfico: os dados são muito "espalhados" (variados). Não existe um consenso ou uma "maioria esmagadora" em um número só.
+
+Resposta: Com base na consulta que nós fizemos com describe, a afirmação de que a maioria das universidades possui cerca de 20.000 alunos é falsa.
+Embora o gráfico mostre um pico nessa faixa, os dados do describe() revelam que a mediana (50%) é de 28.476 alunos e a média é de aproximadamente 31.000. Além disso, o primeiro quartil (25%) mostra que 75% das universidades possuem mais de 18.966 alunos, indicando que o volume total de estudantes está concentrado em faixas superiores a 20.000.
+
+# Total Estudantes Parte 1
+
+TotalAlunos = ds.TotalEstudantes # declara a variavel e fala que ela é igual a table TotalEstudantes
+
+
+ds['TotalEstudantes'].plot(kind='hist') # cria um histograma | #Secundário, ignora
+sns.displot(TotalAlunos, color='green', edgecolor='black', bins=15, kde=False) # cria um outro grafico #Principal
+
+Aqui, como podemos ver, em baixo são os números de alunos que variam de 10 mil a 60 mil, e do lado é as universidades que eles então, pra ver quantos alunos tem em tal universidade.
+
+# Total Estudantes Parte 2
+
+
+# ajeita os dados, monta a tabela, coloca um limite na coluna y (Quantidade de Universidades) e coloca na tela
+
+plt.hist(TotalAlunos)
+plt.title("Gráfico dos alunos das 100 melhores universidades")
+plt.xlabel("Alunos")
+plt.ylim(0, 20)
+plt.ylabel("Quantidade de Universidades")
+plt.show()
+
+Questão 2: Analisando os tipos de Universidades das 100 melhores universidades do mundo
+
+resumo = ds.TipoUniversidade.value_counts() # declara a variavel e separa o que é public do que é private
+
+dadosDicionario = {
+    'Tipo': ['Public', 'Private'],
+    'Total': [resumo['Public'], resumo['Private']]
+} # monta a tabela com as palavras do dicionario
+
+dfEnd = pd.DataFrame(dadosDicionario) # Mostra os dados do dicionário
+sns.barplot(data=dfEnd, x='Tipo', y='Total')
+plt.title("Quantidade de Universidades por Tipo")
+plt.show()
+
+
+
+tabelaVisual = resumo.to_frame().reset_index() # Da um reset no index da tabela
+
+Aqui, como podemos ver, um do lado é public e do outro é private, e em cima tá o número de universidades públicas e privadas.
