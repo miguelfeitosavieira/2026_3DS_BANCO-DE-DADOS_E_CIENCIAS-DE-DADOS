@@ -1,0 +1,53 @@
+-- QUESTÃO 1
+
+select NOME, DE_FERIAS, BAIRRO from tabela_de_vendedores;
+
+select NOME, DE_FERIAS, BAIRRO FROM tabela_de_vendedores where NOME = 'Cláudia Morais' AND BAIRRO = 'Jardins';
+
+-- Sim, ela está de férias. 
+
+-- QUESTÃO 2
+
+select * from tabela_de_vendedores;
+
+select NOME, PERCENTUAL_COMISSAO, DE_FERIAS from tabela_de_vendedores where PERCENTUAL_COMISSAO > 0.10 AND DE_FERIAS = 1;
+
+-- QUESTÃO 3
+
+select * from notas_fiscais;
+
+select MATRICULA, DATA_VENDA from notas_fiscais where MATRICULA = '00237' AND DATA_VENDA = '2015-01-12';
+
+-- Por que o CPF não é uma Chave Primária (PK) nesta tabela?
+-- - O CPF não pode ser a PK porque um mesmo cliente (identificado pelo CPF) pode realizar várias compras (ter várias notas fiscais).
+-- - Uma Chave Primária deve ser exclusiva para cada registro. Se o CPF fosse a PK, o cliente só poderia comprar uma única vez na vida naquela loja.
+-- - Nesta tabela, a PK geralmente é o NÚMERO da nota fiscal.
+
+-- QUESTÃO 4
+
+select * from itens_notas_fiscais;
+
+select CODIGO_DO_PRODUTO, QUANTIDADE from itens_notas_fiscais where QUANTIDADE >= 99;
+
+SELECT CODIGO_DO_PRODUTO, QUANTIDADE, PRECO FROM itens_notas_fiscais WHERE QUANTIDADE >= 99 order by PRECO DESC LIMIT 1; 
+
+-- O item com o maior valor de venda é o produto com o código 1022450, de quantidade de 99 pedidos de produtos feitos, que o orçamento total ficou por R$: 44,8542 e tudo isto você pode consultar na tabela "itens_notas_fiscais".
+
+-- QUESTÃO 5
+
+select * FROM notas_fiscais where NUMERO = '102';
+
+select * from tabela_de_vendedores WHERE MATRICULA = '00236';
+
+select * FROM itens_notas_fiscais WHERE CODIGO_DO_PRODUTO = '1101035' AND NUMERO = '102'; 
+
+SELECT * FROM tabela_de_produtos where CODIGO_DO_PRODUTO = '1101035';
+
+SELECT * from tabela_de_clientes WHERE CPF = '8502682733';
+
+-- O DIAGRAMA DE ENTIDADE-RELACIONAMENTO (DER)
+
+-- - TABELA_DE_CLIENTES (CPF) <───> (CPF) NOTAS_FISCAIS
+-- - TABELA_DE_VENDEDORES (MATRICULA) <───> (MATRICULA) NOTAS_FISCAIS
+-- - NOTAS_FISCAIS (NUMERO) <───> (NUMERO) ITENS_NOTAS_FISCAIS
+-- - TABELA_DE_PRODUTOS (CODIGO_DO_PRODUTO) <───> (CODIGO_DO_PRODUTO) ITENS_NOTAS_FISCAIS
